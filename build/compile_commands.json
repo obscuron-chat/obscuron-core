@@ -1,7 +1,0 @@
-[
-{
-  "directory": "/home/gadzz/kripto_ws/build",
-  "command": "/usr/lib/ccache/c++ -Decdsa_keygen_EXPORTS -isystem /usr/include/python3.10 -fPIC -o CMakeFiles/ecdsa_keygen.dir/ecdsa_keygen.cpp.o -c /home/gadzz/kripto_ws/ecdsa_keygen.cpp",
-  "file": "/home/gadzz/kripto_ws/ecdsa_keygen.cpp"
-}
-]
