@@ -15,7 +15,7 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 # Initialize SocketIO with CORS allowed origins
-socketio = SocketIO(app, cors_allowed_origins="*")  # This allows all origins; you can specify specific ones like ["http://localhost:3000"]
+socketio = SocketIO(app, cors_allowed_origins="*", ping_timeout=400, ping_interval=5)  # This allows all origins; you can specify specific ones like ["http://localhost:3000"]
 
 # Keep track of connected users by username and their session IDs
 users = {}
