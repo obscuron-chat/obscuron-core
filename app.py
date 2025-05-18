@@ -3,6 +3,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_cors import CORS
 from datetime import datetime
 from dotenv import load_dotenv
+import hashlib
 import jwt
 import os
 from supabase import create_client
@@ -239,6 +240,7 @@ def handle_message(data):
         'sender': sender,
         'receiver': recipient,
         'message': message,
+        'hashed_message': hashlib.sha3_256(message.encode('utf-8')).hexdigest(),
         'timestamp': timestamp
     }
 
