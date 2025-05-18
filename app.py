@@ -140,6 +140,29 @@ def get_user():
             return jsonify({"error": "No data found"}), 404
         
         return jsonify(response.data), 200
+
+# Return Public Key based on Username
+@app.route("/get/public_key", methods=["POST"])
+def get_public_key(): 
+
+        data = request.get_json()
+
+        if "user_name" not in data:
+            return jsonify({"status": "Login Failed", "error": "Username is required"}),200
+        load_dotenv()
+
+        SUPABASE_URL = os.getenv("SUPABASE_URL")
+        SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+        response = supabase.table("User").select("public_key").eq("user_name", data["user_name"]).execute()
+        
+        # Or you can check if data is empty or None
+        if not response.data:
+            return jsonify({"error": "No data found"}), 404
+        
+        return jsonify(response.data), 200
         
 @app.route("/auth/login", methods=["POST"])
 def login():
@@ -234,16 +257,18 @@ def handle_message(data):
     sender = data['from_user']
     recipient = data['to_user']
     message = data['message']
+    hashed_message = data['hashed_message']
+    digital_signature = data['digital_signature'] # In JSON format
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     msg = {
         'sender': sender,
         'receiver': recipient,
         'message': message,
-        'hashed_message': hashlib.sha3_256(message.encode('utf-8')).hexdigest(),
+        'hashed_message': hashed_message,
+        'digital_signature': digital_signature,  
         'timestamp': timestamp
     }
-
 
     load_dotenv()
 
@@ -256,6 +281,8 @@ def handle_message(data):
         "sender": sender,
         "receiver": recipient,
         "message": message,
+        "hashed_message": hashed_message,
+        "digital_signature" : digital_signature, # In JSON format
         "timestamp": timestamp
     }).execute()
 
